@@ -4,7 +4,8 @@
         "list": "cpp",
         "*.tcc": "cpp",
         "iostream": "cpp",
-        "numeric": "cpp"
+        "numeric": "cpp",
+        "iosfwd": "cpp"
     },
     "C_Cpp.default.cppStandard": "c++23"
 }
