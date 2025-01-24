@@ -65,5 +65,6 @@ int main() {
     sim_total = reduce(sim_list.begin(), sim_list.end());
     cout << sim_total << endl;
 
+    cout << endl;
     return 0;
 }
