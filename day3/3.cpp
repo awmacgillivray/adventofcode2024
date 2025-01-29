@@ -11,8 +11,8 @@ int main()
 {
     // initialise variables
     string line;
-    const regex exp_A("mul\\([0-9]+\\,[0-9]+\\)");
-    const regex exp_B("mul\\([0-9]+\\,[0-9]+\\)|do\\(\\)|don\\'t\\(\\)");
+    const regex exp_A("mul\\([0-9]{1,3}\\,[0-9]{1,3}\\)");
+    const regex exp_B("mul\\([0-9]{1,3}\\,[0-9]{1,3}\\)|do\\(\\)|don\\'t\\(\\)");
     smatch result;
     int total = 0;
     bool do_mul = true;
