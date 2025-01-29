@@ -7,7 +7,8 @@
 
 using namespace std;
 
-int main() {
+int main()
+{
     // initialise variables
     vector<int> list1;
     vector<int> list2;
@@ -24,7 +25,8 @@ int main() {
 
     // read input from file
     ifstream file("1_input.txt");
-    while (getline (file, line)) {
+    while (getline(file, line))
+    {
         pos = line.find(delimiter);
         num1 = stoi(line.substr(0, pos));
         num2 = stoi(line.substr(pos + delimiter.length(), line.length()));
@@ -39,28 +41,33 @@ int main() {
     sort(list2.begin(), list2.end());
 
     // calculate and print item differences
-    for (int i = 0; i < list1.size(); i++) {
+    for (int i = 0; i < list1.size(); i++)
+    {
         diff_list.push_back((abs(list1[i] - list2[i])));
     }
 
     // sum differences
-    cout << "Total difference:" << endl << "> ";
+    cout << "Total difference:" << endl
+         << "> ";
     diff_total = reduce(diff_list.begin(), diff_list.end());
     cout << diff_total << endl;
 
     // find similarity score
-    for (int i = 0; i < list1.size(); i++) {
+    for (int i = 0; i < list1.size(); i++)
+    {
         int target = list1[i];
         int num_occur = 0;
         auto it = find(list2.begin(), list2.end(), target);
-        while (it != list2.end()) {
+        while (it != list2.end())
+        {
             num_occur += 1;
             it = find(it + 1, list2.end(), target);
         }
 
         sim_list.push_back(list1[i] * num_occur);
     }
-    cout << "Similarity score:" << endl << "> ";
+    cout << "Similarity score:" << endl
+         << "> ";
     sim_total = reduce(sim_list.begin(), sim_list.end());
     cout << sim_total << endl;
 
