@@ -8,13 +8,16 @@
 
 using namespace std;
 
-
 vector<map<int, set<int>>> add_pages_to_transition_maps(
     int page1,
     int page2,
-    map<int, set<int>> fwd_transition_map,
-    map<int, set<int>> bwd_transition_map
-){
+    vector<map<int, set<int>>> maps)
+{
+    /*
+    Add page precedence rules to forward and backward transition maps
+    */
+    map<int, set<int>> fwd_transition_map = maps[0];
+    map<int, set<int>> bwd_transition_map = maps[1];
     if (!fwd_transition_map.contains(page1))
     {
         fwd_transition_map[page1] = set<int>{page2};
@@ -34,12 +37,16 @@ vector<map<int, set<int>>> add_pages_to_transition_maps(
     return {fwd_transition_map, bwd_transition_map};
 }
 
-
-bool check_update_order(
+tuple<bool, int, int> check_update_order(
     vector<int> update_pages_int,
-    map<int, set<int>> fwd_transition_map,
-    map<int, set<int>> bwd_transition_map
-){
+    vector<map<int, set<int>>> maps)
+{
+    /*
+    Check order of page numbers
+    Returns true/false if valid along with relevant indices
+    */
+    map<int, set<int>> fwd_transition_map = maps[0];
+    map<int, set<int>> bwd_transition_map = maps[1];
     for (int i = 0; i < update_pages_int.size(); i++)
     {
         int page = update_pages_int[i];
@@ -50,7 +57,7 @@ bool check_update_order(
             if (bwd_transition_map.contains(page) &&
                 !bwd_transition_map.at(page).contains(bwd_page))
             {
-                return false;
+                return {false, i, j};
             }
         }
         // check subsequent pages for correct order
@@ -60,13 +67,12 @@ bool check_update_order(
             if (fwd_transition_map.contains(page) &&
                 !fwd_transition_map.at(page).contains(fwd_page))
             {
-                return false;
+                return {false, i, j};
             }
         }
     }
-    return true;
+    return {true, 0, 0};
 }
-
 
 int main()
 {
@@ -76,6 +82,7 @@ int main()
     const regex exp_update("([0-9]{2}\\,)+[0-9]{2}");
     map<int, set<int>> fwd_transition_map;
     map<int, set<int>> bwd_transition_map;
+    vector<map<int, set<int>>> maps = {fwd_transition_map, bwd_transition_map};
     int total = 0;
     int total_fixed = 0;
 
@@ -88,13 +95,7 @@ int main()
         {
             int page1 = stoi(line.substr(0, 2));
             int page2 = stoi(line.substr(3, 2));
-            vector<map<int, set<int>>> maps = add_pages_to_transition_maps(
-                page1, page2,
-                fwd_transition_map,
-                bwd_transition_map
-            );
-            fwd_transition_map = maps[0];
-            bwd_transition_map = maps[1];
+            maps = add_pages_to_transition_maps(page1, page2, maps);
         }
         // check update sequence for correct order
         else if (regex_match(line, exp_update))
@@ -106,7 +107,8 @@ int main()
                 update_pages_int.push_back(stoi(page));
             }
             // part A
-            if (check_update_order(update_pages_int, fwd_transition_map, bwd_transition_map))
+            tuple<bool, int, int> result = check_update_order(update_pages_int, maps);
+            if (get<0>(result) == true)
             {
                 total += update_pages_int[update_pages_int.size() / 2];
                 // cout << line << endl;
@@ -115,14 +117,31 @@ int main()
             else
             {
                 // find potential valid order and new total
-                ;
+                vector<int> new_update_pages = update_pages_int;
+                // swap offending elements, check validity, and iterate
+                while (true)
+                {
+                    int index1 = get<1>(result);
+                    int index2 = get<2>(result);
+                    vector<int> temp = new_update_pages;
+                    new_update_pages[index1] = temp[index2];
+                    new_update_pages[index2] = temp[index1];
+                    result = check_update_order(new_update_pages, maps);
+                    if (get<0>(result) == true)
+                    {
+                        total_fixed += new_update_pages[new_update_pages.size() / 2];
+                        break;
+                    }
+                }
             }
         }
     }
 
     // result
-    cout << endl << "Total: " << total << endl;
-    cout << endl << "Total fixed: " << total_fixed << endl;
+    cout << endl
+         << "Total: " << total;
+    cout << endl
+         << "Total fixed: " << total_fixed;
     cout << endl;
     return 0;
 }
