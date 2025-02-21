@@ -12,7 +12,9 @@
         "system_error": "cpp",
         "regex": "cpp",
         "fstream": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "stdexcept": "cpp",
+        "ostream": "cpp"
     },
     "C_Cpp.default.cppStandard": "c++23"
 }
