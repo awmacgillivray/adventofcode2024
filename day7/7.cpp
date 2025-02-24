@@ -29,12 +29,21 @@ bool perform_operations(vector<unsigned long long> numbers, unsigned long long t
     }
     unsigned long long first_mul_second = first * second;
     unsigned long long first_add_second = first + second;
+    unsigned long long first_cat_second = stoull(to_string(first) + to_string(second));
+
     vector<unsigned long long> mul_vector(numbers.begin() + 2, numbers.end());
     mul_vector.insert(mul_vector.begin(), first_mul_second);
     vector<unsigned long long> add_vector(numbers.begin() + 2, numbers.end());
     add_vector.insert(add_vector.begin(), first_add_second);
+    vector<unsigned long long> cat_vector(numbers.begin() + 2, numbers.end());
+    cat_vector.insert(cat_vector.begin(), first_cat_second);
+
     // Recursively perform operations on new subtotals
-    return perform_operations(mul_vector, target) || perform_operations(add_vector, target);
+    return (
+        perform_operations(mul_vector, target) ||
+        perform_operations(add_vector, target) ||
+        perform_operations(cat_vector, target) // PART B
+    );
 }
 
 int main()
@@ -43,7 +52,7 @@ int main()
     string line;
     const regex equation("([0-9]+\\:){1}|(\\ [0-9]+)");
     smatch result;
-    unsigned long long calibration_result = 0;  // must be ULL to hold large values in data
+    unsigned long long calibration_result = 0; // must be ULL to hold large values in data
 
     // Load data from file
     ifstream file("7_input.txt");
