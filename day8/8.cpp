@@ -85,21 +85,27 @@ int main()
                 vector<int> antenna_b = locations[j];
                 vector<int> offset = {antenna_b[0] - antenna_a[0],
                                       antenna_b[1] - antenna_a[1]};
-                // Apply offset in opposite directions to find antenna pair antinodes
-                vector<int> antinode_a = {antenna_a[0] - offset[0],
-                                          antenna_a[1] - offset[1]};
-                vector<int> antinode_b = {antenna_b[0] + offset[0],
-                                          antenna_b[1] + offset[1]};
-                // Add antinodes to total count if they lie within grid bounds
-                if (check_location_in_bounds(antinode_a, grid_dimensions))
+                // PART B (for PART A multiplier = 1)
+                for (int multiplier = 0; multiplier < grid_dimensions; multiplier++)
                 {
-                    mask[antinode_a[0]][antinode_a[1]] = true;
-                    grid_copy[antinode_a[0]][antinode_a[1]] = '#';
-                }
-                if (check_location_in_bounds(antinode_b, grid_dimensions))
-                {
-                    mask[antinode_b[0]][antinode_b[1]] = true;
-                    grid_copy[antinode_b[0]][antinode_b[1]] = '#';
+                    vector<int> offset_multiplied = {offset[0] * multiplier,
+                                                     offset[1] * multiplier};
+                    // Apply offset in opposite directions to find antenna pair antinodes
+                    vector<int> antinode_a = {antenna_a[0] - offset_multiplied[0],
+                                              antenna_a[1] - offset_multiplied[1]};
+                    vector<int> antinode_b = {antenna_b[0] + offset_multiplied[0],
+                                              antenna_b[1] + offset_multiplied[1]};
+                    // Add antinodes to total count if they lie within grid bounds
+                    if (check_location_in_bounds(antinode_a, grid_dimensions))
+                    {
+                        mask[antinode_a[0]][antinode_a[1]] = true;
+                        grid_copy[antinode_a[0]][antinode_a[1]] = '#';
+                    }
+                    if (check_location_in_bounds(antinode_b, grid_dimensions))
+                    {
+                        mask[antinode_b[0]][antinode_b[1]] = true;
+                        grid_copy[antinode_b[0]][antinode_b[1]] = '#';
+                    }
                 }
             }
         }
