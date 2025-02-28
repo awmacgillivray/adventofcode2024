@@ -123,20 +123,6 @@ Guard find_guard(vector<vector<char>> grid)
     throw runtime_error("Guard starting location not found");
 }
 
-void print_grid(vector<vector<char>> mask)
-{
-    /* Debugging function to print out visual representation of grid */
-    for (auto row : mask)
-    {
-        for (auto item : row)
-        {
-            cout << item;
-        }
-        cout << endl;
-    }
-    cout << endl;
-}
-
 int main()
 {
     // Initialise variables

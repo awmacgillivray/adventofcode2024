@@ -1,6 +1,7 @@
 #ifndef MY_CLASS_H
 #define MY_CLASS_H
 
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -22,6 +23,20 @@ vector<string> split_string(string input, string delimiter) {
         strings.push_back(str1);
         input = str2;
     }
+}
+
+void print_grid(vector<vector<char>> grid)
+{
+    /* Debugging function to print out visual representation of grid */
+    for (auto row : grid)
+    {
+        for (auto item : row)
+        {
+            cout << item;
+        }
+        cout << endl;
+    }
+    cout << endl;
 }
 
 #endif
